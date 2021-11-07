@@ -1,3 +1,3 @@
 [submodule "libtcod"]
-	path = libtcod
+	path = libs/libtcod
 	url = https://github.com/libtcod/libtcod
