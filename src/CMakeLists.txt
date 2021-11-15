@@ -1,9 +1,18 @@
-cmake_minimum_required(VERSION 3.10)
-project(Wayventure)
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED True)
-set(CMAKE_BUILD_TYPE Debug)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "../../")
-include_directories(../include/)
-add_executable(wayventure main.cc classes.cc main_dungeon.cc inventory_mode.cc draw.cc generate.cc town.cc help_mode.cc inventory_modifier_mode.cc town_additional.cc threads.cc)
-target_link_libraries(wayventure -static-libstdc++ -static-libgcc -ltcod -lSDL2 -lpthread -lz -ldl)
+file(GLOB MY_FILES res/*.txt res/*.png res/help/*.txt)
+file(COPY ${MY_FILES} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+
+add_executable(wayventure 
+	main.cc
+	classes.cc
+	main_dungeon.cc
+	inventory_mode.cc
+	draw.cc
+	generate.cc
+	town.cc
+	help_mode.cc
+	inventory_modifier_mode.cc
+	threads.cc
+	town_additional.cc
+)
+
+target_link_libraries(wayventure -ltcod -lSDL2 -lpthread -lz -ldl)
