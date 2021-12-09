@@ -665,7 +665,7 @@ void draw_miner_hire_selections(tcod::Console &main_win, tcod::ContextPtr &conte
     payment_string << "Payment [" << ideal_payment << "]: " << actual_payment;
     draw_menu_selections(main_win, context, 5, csr_pos==1, payment_string.str());
     std::stringstream time_string;
-    time_string << "Total duration: " << Time{miner.job.original_job_duration.time_to_seconds()*static_cast<long long int>((1000-miner.skill_level)/1000)};
+    time_string << "Total duration: " << Time{miner.job.original_job_duration.time_to_seconds()*static_cast<long int>((1000-miner.skill_level)/1000)};
     tcod::print(main_win, {0, 7}, time_string.str(), WHITE, BLACK);
     draw_menu_selections(main_win, context, 9, csr_pos==2, "[Done]");
     draw_menu_selections(main_win, context, 10, csr_pos==3, "[Cancel]");
@@ -718,7 +718,7 @@ void miner_hire_selection(tcod::Console &main_win, tcod::ContextPtr &context, Mi
                         continue;
                     }
                     miner.job.has_active_job=true;
-                    miner.job.total_job_duration=Time{miner.job.original_job_duration.time_to_seconds()*static_cast<long long int>((1000-miner.skill_level)/1000)};
+                    miner.job.total_job_duration=Time{miner.job.original_job_duration.time_to_seconds()*static_cast<long int>((1000-miner.skill_level)/1000)};
                     miner.job.job_start=std::chrono::steady_clock::now();
                     miner.job.loot_multiplier=double(actual_payment)/double(ideal_payment);
                     if(miner.job.loot_multiplier>2.0){
@@ -816,7 +816,7 @@ void miner_hire_interface(tcod::Console &main_win, tcod::ContextPtr &context, Pl
                 }
                 else{
                     std::stringstream ss;
-                    Time time_left{miner.job.total_job_duration.time_to_seconds()-std::chrono::duration_cast<std::chrono::seconds>(std::chrono::steady_clock::now()-miner.job.job_start).count()};
+                    Time time_left{static_cast<long long int>(miner.job.total_job_duration.time_to_seconds())-std::chrono::duration_cast<std::chrono::seconds>(std::chrono::steady_clock::now()-miner.job.job_start).count()};
                     ss << "[System] Time left: " << time_left;
                     clear_and_draw_dialog(main_win, context, ss.str());
                 }
@@ -844,7 +844,7 @@ void draw_archaeologist_decryption_menu(tcod::Console &main_win, tcod::ContextPt
     ss << "Payment [" << ideal_payment << "]: " << actual_payment;
     draw_menu_selections(main_win, context, 7, csr_pos==2, ss.str());
     ss.str(std::string());
-    ss << "Total duration: " << Time{((archaeologist.job.decryption_amount.mysterious_artifact*archaeologist.job.decrypt_artifact_duration.time_to_seconds()+archaeologist.job.decryption_amount.mysterious_piece*archaeologist.job.decrypt_piece_duration.time_to_seconds())*static_cast<long long int>(500-archaeologist.skill_level)/500)};
+    ss << "Total duration: " << Time{((static_cast<long int>(archaeologist.job.decryption_amount.mysterious_artifact)*archaeologist.job.decrypt_artifact_duration.time_to_seconds()+ static_cast<long int>(archaeologist.job.decryption_amount.mysterious_piece)*archaeologist.job.decrypt_piece_duration.time_to_seconds())*static_cast<long int>(500-archaeologist.skill_level)/500)};
     tcod::print(main_win, {0,9}, ss.str(), WHITE, BLACK);
     draw_menu_selections(main_win, context, 11, csr_pos==3, "[Start decryption]");
     draw_menu_selections(main_win, context, 12, csr_pos==4, "[Cancel]");
@@ -895,7 +895,7 @@ void archaeologist_decryption_menu(tcod::Console &main_win, tcod::ContextPtr &co
                     clear_and_draw_dialog(main_win, context, "[System] Insufficient gold");
                     continue;
                 }
-                archaeologist.job.total_job_duration=Time{((archaeologist.job.decryption_amount.mysterious_artifact*archaeologist.job.decrypt_artifact_duration.time_to_seconds()+archaeologist.job.decryption_amount.mysterious_piece*archaeologist.job.decrypt_piece_duration.time_to_seconds())*static_cast<long long>(500-archaeologist.skill_level)/500)};
+                archaeologist.job.total_job_duration=Time{((static_cast<long int>(archaeologist.job.decryption_amount.mysterious_artifact)*archaeologist.job.decrypt_artifact_duration.time_to_seconds()+ static_cast<long int>(archaeologist.job.decryption_amount.mysterious_piece)*archaeologist.job.decrypt_piece_duration.time_to_seconds())*static_cast<long int>(500-archaeologist.skill_level)/500)};
                 archaeologist.job.job_start=std::chrono::steady_clock::now();
                 archaeologist.job.has_active_job=true;
                 if(archaeologist.relation<100){
@@ -1005,7 +1005,7 @@ void archaeologist_interface(tcod::Console &main_win, tcod::ContextPtr &context,
                 }
                 else{
                     std::stringstream ss;
-                    Time time_left{archaeologist.job.total_job_duration.time_to_seconds()-std::chrono::duration_cast<std::chrono::seconds>(std::chrono::steady_clock::now()-archaeologist.job.job_start).count()};
+                    Time time_left{static_cast<long long int>(archaeologist.job.total_job_duration.time_to_seconds())-std::chrono::duration_cast<std::chrono::seconds>(std::chrono::steady_clock::now()-archaeologist.job.job_start).count()};
                     ss << "[System] Time left: " << time_left;
                     clear_and_draw_dialog(main_win, context, ss.str());
                 }
